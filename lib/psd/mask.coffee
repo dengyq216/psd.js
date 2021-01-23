@@ -33,6 +33,17 @@ module.exports = class Mask
 
     @defaultColor = @file.readByte()
     @flags = @file.readByte()
+    
+    if (@flags & (0x01 << 4)) 
+      params = @file.readByte()
+      if (params & 0x01) 
+        @userDensity = @file.readByte() / 0xff
+      if (params & 0x01 << 1) 
+        @userFeather = @file.readDouble()
+      if (params & 0x01 << 2) 
+        @vectorDensity = @file.readByte() / 0xff
+      if (params & 0x01 << 3) 
+        @vectorFeather = @file.readDouble()
 
     @file.seek maskEnd
     return @
